@@ -94,10 +94,6 @@ export default function TripLog() {
 
   const totalKilometers = trips.reduce((sum, trip) => sum + trip.distance, 0);
 
-  const calculateDistance = (start: string, end: string): number => {
-    return Math.floor(Math.random() * 95) + 5;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
@@ -146,12 +142,6 @@ export default function TripLog() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-
-  const getSuggestions = (input: string) => {
-    return mockLocations.filter(location =>
-      location.toLowerCase().includes(input.toLowerCase())
-    );
   };
 
   return (
