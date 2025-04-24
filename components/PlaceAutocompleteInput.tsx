@@ -7,27 +7,38 @@ type Props = {
   onPlaceSelect: (value: string) => void;
 };
 
+interface PlaceAutocompleteElement extends HTMLElement {
+  value?: {
+    formatted_address?: string;
+  };
+}
+
 export default function PlaceAutocompleteInput({ placeholder, onPlaceSelect }: Props) {
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (!ref.current) return;
 
-    const el = document.createElement('gmpx-placeautocomplete');
+    const el = document.createElement('gmpx-placeautocomplete') as PlaceAutocompleteElement;
     el.setAttribute('style', 'display: block; width: 100%');
     el.setAttribute('placeholder', placeholder);
 
     ref.current.replaceWith(el);
 
-    const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
-      if (!place || !place.formatted_address) return;
-      onPlaceSelect(place.formatted_address);
+    const handlePlaceSelect = (event: Event) => {
+      const element = event.target as PlaceAutocompleteElement;
+      const place = element.value;
+      if (place && place.formatted_address) {
+        onPlaceSelect(place.formatted_address);
+      }
     };
 
-    // Hier könntest du z. B. einen Listener an `el` anhängen, falls API vorgesehen
-    // el.addEventListener('placechange', (e) => handlePlaceSelect((e as CustomEvent).detail));
+    el.addEventListener('placechange', handlePlaceSelect);
 
-  }, [placeholder, onPlaceSelect]); // 🔄 Abhängigkeiten ergänzt
+    return () => {
+      el.removeEventListener('placechange', handlePlaceSelect);
+    };
+  }, [placeholder, onPlaceSelect]);
 
   return <input ref={ref} />;
 }

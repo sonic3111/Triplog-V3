@@ -33,10 +33,7 @@ function getDistanceInKm(start: string, end: string): Promise<number> {
         travelMode: google.maps.TravelMode.DRIVING,
         unitSystem: google.maps.UnitSystem.METRIC,
       },
-      (
-        response: google.maps.DistanceMatrixResponse | null,
-        status: google.maps.DistanceMatrixStatus
-      ) => {
+      (response, status) => {
         if (
           status === 'OK' &&
           response &&
@@ -45,15 +42,17 @@ function getDistanceInKm(start: string, end: string): Promise<number> {
           const distanceInMeters = response.rows[0].elements[0].distance.value;
           resolve(distanceInMeters / 1000);
         } else {
-          console.log('Distance Matrix response:', response, status);
+          console.error('Distance Matrix failed:', {
+            status,
+            response,
+            elementStatus: response?.rows?.[0]?.elements?.[0]?.status
+          });
           reject('Distance calculation failed');
         }
       }
     );
   });
 }
-
-
 
 type Trip = {
   id: string;
