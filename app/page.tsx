@@ -16,8 +16,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trash, Plus, Download } from "lucide-react";
 import { LocationAutocomplete } from "@/components/LocationAutocomplete";
-import PlaceAutocompleteInput from "@/components/PlaceAutocompleteInput";
-
 
 function getDistanceInKm(start: string, end: string): Promise<number> {
   return new Promise((resolve, reject) => {
