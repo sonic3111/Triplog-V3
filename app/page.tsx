@@ -64,14 +64,6 @@ type Trip = {
   comment: string;
 };
 
-const mockLocations = [
-  "Berlin, Germany",
-  "Munich, Germany",
-  "Hamburg, Germany",
-  "Cologne, Germany",
-  "Frankfurt, Germany"
-];
-
 export default function TripLog() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [startLocation, setStartLocation] = useState('');

@@ -19,13 +19,15 @@ export default function PlaceAutocompleteInput({ placeholder, onPlaceSelect }: P
 
     ref.current.replaceWith(el);
 
-    el.addEventListener('gmpx-placeautocomplete-placechange', (e: any) => {
-      const place = e.detail;
-      if (place?.formattedAddress) {
-        onPlaceSelect(place.formattedAddress);
-      }
-    });
-  }, []);
+    const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+      if (!place || !place.formatted_address) return;
+      onPlaceSelect(place.formatted_address);
+    };
+
+    // Hier könntest du z. B. einen Listener an `el` anhängen, falls API vorgesehen
+    // el.addEventListener('placechange', (e) => handlePlaceSelect((e as CustomEvent).detail));
+
+  }, [placeholder, onPlaceSelect]); // 🔄 Abhängigkeiten ergänzt
 
   return <input ref={ref} />;
 }
